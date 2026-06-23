@@ -8,4 +8,7 @@ class AppAssets {
   // Icons (without wordmark)  
   static const String iconLight = 'assets/images/icon_light.png';
   static const String iconDark  = 'assets/images/icon_dark.png';
+
+  //splash
+  static const String splash = 'assets/images/splash.png';
 }

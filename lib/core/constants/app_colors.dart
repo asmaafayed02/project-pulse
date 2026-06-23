@@ -7,6 +7,8 @@ class AppColors {
   static const primary = Color(0xFF4F6BFF);
   static const primaryDark = Color(0xFF3D57F5);
   static const primaryLight = Color(0xFFE8ECFF);
+  static const primaryContainer = Color(0xFF1A237E);   // ← dark blue container (dark mode)
+  static const inversePrimary = Color(0xFF7B8CF9);     // ← light blue (dark mode)
 
   static const secondary = Color(0xFF57E6A7);
 
@@ -39,6 +41,15 @@ class AppColors {
   static const surfaceDark = Color(0xFF161B26);
 
   static const divider = Color(0xFFEAECF0);
+
+  // Splash Gradient
+  static const splashGradientDark1  = Color(0xFF0F1535);
+  static const splashGradientDark2  = Color(0xFF1A237E);
+  static const splashGradientDark3  = Color(0xFF1565C0);
+
+  static const splashGradientLight1 = Color(0xFF4A5CE8);
+  static const splashGradientLight2 = Color(0xFF5B6EF5);
+  static const splashGradientLight3 = Color(0xFF7B8CF9);
 
   // Task Priority
   static const lowPriority = Color(0xFF22C55E);

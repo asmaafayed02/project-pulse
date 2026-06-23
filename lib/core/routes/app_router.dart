@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_pulse/features/splash/presentation/pages/splash_page.dart';
 
 import 'route_names.dart';
 
@@ -12,7 +13,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RouteNames.splash,
-        builder: (context, state) => const _PlaceholderPage('Splash'),
+        builder: (context, state) => const SplashPage(),
       ),
 
       GoRoute(

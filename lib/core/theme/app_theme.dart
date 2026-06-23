@@ -10,9 +10,16 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
 
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.light,
+    colorScheme: ColorScheme.light(
+      primary:          AppColors.primary,         // 0xFF4F6BFF
+      onPrimary:        AppColors.white,
+      primaryContainer: AppColors.primaryLight,    // 0xFFE8ECFF  ← lighter blue
+      inversePrimary:   AppColors.primaryDark,     // 0xFF3D57F5
+      secondary:        AppColors.secondary,       // 0xFF57E6A7
+      onSecondary:      AppColors.black,
+      surface:          AppColors.surface,
+      onSurface:        AppColors.black,
+      error:            AppColors.error,
     ),
 
     scaffoldBackgroundColor: AppColors.background,
@@ -52,11 +59,16 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
 
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.dark,
+    colorScheme: ColorScheme.dark(
+      primary:          AppColors.primary,
+      onPrimary:        AppColors.white,
+      primaryContainer: AppColors.primaryContainer,  
+      inversePrimary:   AppColors.inversePrimary,         
+      secondary:        AppColors.secondary,
+      surface:          AppColors.surfaceDark,     
+      onSurface:        AppColors.white,
+      error:            AppColors.error,
     ),
-
     scaffoldBackgroundColor: AppColors.backgroundDark,
 
     textTheme: AppTextTheme.textTheme,

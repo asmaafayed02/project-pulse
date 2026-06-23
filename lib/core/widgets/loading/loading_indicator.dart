@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_pulse/core/constants/app_colors.dart';
 import 'package:project_pulse/core/constants/app_sizes.dart';
-import 'package:project_pulse/extensions/widget_extension.dart';
+import 'package:project_pulse/core/extensions/widget_extension.dart';
 
 
 class EmptyState extends StatelessWidget {

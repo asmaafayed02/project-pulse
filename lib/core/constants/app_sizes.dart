@@ -31,6 +31,10 @@ class AppSizes {
 
   // Buttons
   static double buttonHeight = 52.h;
+  // Logos
+  static double logo80 = 80.r;
+  static double logo100 = 100.r;
+  static double logo110 = 110.r;
 
   // AppBar
   static double appBarHeight = 60.h;
