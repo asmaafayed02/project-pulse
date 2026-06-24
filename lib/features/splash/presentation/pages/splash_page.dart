@@ -21,14 +21,14 @@ class _SplashPageState extends ConsumerState<SplashPage>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
-
+  ProviderSubscription<AsyncValue<bool>>? _subscription;
   @override
   void initState() {
     super.initState();
     _setupAnimations();
 
     Future.microtask(() {
-      ref.listenManual<AsyncValue<bool>>(
+      _subscription = ref.listenManual<AsyncValue<bool>>(
         splashProvider,
         (_, next) {
           next.whenData((isLoggedIn) {
@@ -67,6 +67,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
 
   @override
   void dispose() {
+    _subscription?.close();
     _controller.dispose();
     super.dispose();
   }

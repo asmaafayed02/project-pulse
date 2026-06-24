@@ -15,6 +15,13 @@ class SecureStorageService {
     );
   }
 
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _storage.write(
+      key: ApiConstants.refreshTokenKey,
+      value: refreshToken,
+    );
+  }
+  
   Future<String?> getToken() {
     return _storage.read(
       key: ApiConstants.tokenKey,
@@ -25,6 +32,26 @@ class SecureStorageService {
     await _storage.delete(
       key: ApiConstants.tokenKey,
     );
+  }
+  Future<void> saveUserData({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String email,
+  }) async {
+    await _storage.write(key: 'user_id',         value: id);
+    await _storage.write(key: 'user_first_name', value: firstName);
+    await _storage.write(key: 'user_last_name',  value: lastName);
+    await _storage.write(key: 'user_email',      value: email);
+  }
+
+  Future<String?> getUserId()        => _storage.read(key: 'user_id');
+  Future<String?> getUserFirstName() => _storage.read(key: 'user_first_name');
+  Future<String?> getUserLastName()  => _storage.read(key: 'user_last_name');
+  Future<String?> getUserEmail()     => _storage.read(key: 'user_email');
+
+  Future<void> clearAll() async {
+      await _storage.deleteAll();
   }
 }
 

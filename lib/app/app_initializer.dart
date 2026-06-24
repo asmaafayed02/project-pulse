@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
+import 'package:project_pulse/firebase_options.dart';
 
 class AppInitializer {
   AppInitializer._();
@@ -10,8 +12,9 @@ class AppInitializer {
 
     // await Hive.initFlutter();
 
-    // await Firebase.initializeApp();
-
+   await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     // await ScreenUtil.ensureScreenSize();
   }
 }

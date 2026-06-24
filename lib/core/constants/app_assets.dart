@@ -11,4 +11,7 @@ class AppAssets {
 
   //splash
   static const String splash = 'assets/images/splash.png';
+
+  // Illustrations
+  static const String googleIllustration = 'https://www.svgrepo.com/show/475656/google-color.svg';
 }

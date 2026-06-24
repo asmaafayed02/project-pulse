@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "440737084421",
+    "project_id": "projectpulse-eb75e",
+    "storage_bucket": "projectpulse-eb75e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440737084421:android:5a80090e4aa0d6ef42186c",
+        "android_client_info": {
+          "package_name": "com.electropi.projectpulse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCla0xI5rD-gXGDa8-owcfSyH9_Xf4hz_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

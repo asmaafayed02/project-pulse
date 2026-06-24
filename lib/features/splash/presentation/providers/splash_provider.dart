@@ -1,10 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_pulse/core/services/secure_storage_service.dart';
+import 'package:project_pulse/features/auth/presentation/providers/auth_dependencies.dart';
 
 final splashProvider = FutureProvider<bool>((ref) async {
-    await Future.delayed(const Duration(seconds: 2));
+  final isLoggedIn = ref.read(
+    isLoggedInUseCaseProvider,
+  );
 
-  final storage = ref.read(secureStorageProvider);
-  final token = await storage.getToken();
-  return token != null && token.isNotEmpty;
+  await Future.delayed(
+    const Duration(seconds: 2),
+  );
+
+  return isLoggedIn();
 });

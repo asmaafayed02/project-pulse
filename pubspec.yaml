@@ -53,6 +53,13 @@ dependencies:
   flutter_screenutil_plus: ^1.5.0
   cached_network_image: ^3.4.1
   flutter_svg: ^2.3.0
+  
+  # Firebase
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+
+  # Utilities
+  fpdart: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -72,9 +79,9 @@ dev_dependencies:
 flutter_launcher_icons:
   # ── Android ──────────────────────────────────────────
   android: true
-  image_path: "assets/images/icon_light.png"          # الأيقونة العادية
+  image_path: "assets/images/icon_light.png"          
   
-  adaptive_icon_background: "#4A5CE8"                  # لون الخلفية
+  adaptive_icon_background: "#fff"                  
   adaptive_icon_foreground: "assets/images/icon_light.png"
   
   # Android 13+ Dark mode icon
