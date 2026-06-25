@@ -9,6 +9,7 @@ class RouteNames {
   static const String home = '/home';
 
   static const String projectDetails = '/project-details';
+  static const String createProject  = '/projects/create';
 
   static const String profile = '/profile';
 

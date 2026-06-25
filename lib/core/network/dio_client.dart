@@ -1,16 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:project_pulse/core/api/api_constants.dart';
 
-import 'interceptors/auth_interceptor.dart';
 import 'interceptors/logger_interceptor.dart';
 
 class DioClient {
   DioClient({
-    required AuthInterceptor authInterceptor,
     required LoggerInterceptor loggerInterceptor,
   }) : dio = Dio(
           BaseOptions(
-            baseUrl: ApiConstants.dummyJsonBaseUrl,
+            baseUrl: ApiConstants.mockApiBaseUrl,
             connectTimeout: const Duration(seconds: 30),
             receiveTimeout: const Duration(seconds: 30),
             sendTimeout: const Duration(seconds: 30),
@@ -21,7 +19,6 @@ class DioClient {
           ),
         ) {
     dio.interceptors.addAll([
-      authInterceptor,
       loggerInterceptor,
     ]);
   }

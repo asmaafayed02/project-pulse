@@ -31,7 +31,7 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: keyboardType,
+      keyboardType: maxLines > 1 ? TextInputType.multiline : keyboardType, 
       validator: validator,
       onChanged: onChanged,
       textInputAction: textInputAction,

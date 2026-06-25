@@ -97,7 +97,8 @@ UserEntity? getCurrentUser() {
   return UserModel.fromFirebase(user);
 }
   
-Future<bool> isLoggedIn() async {
+@override
+  Future<bool> isLoggedIn() async {
   try {
     final user = _remoteDataSource.getCurrentUser();
 

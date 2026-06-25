@@ -7,7 +7,10 @@ class AppSizes {
   // Spacing
   static double s4 = 4.w;
   static double s8 = 8.w;
+  static const double s6  = 6;
+  static const double s10 = 10;
   static double s12 = 12.w;
+  static const double s14 = 14;
   static double s16 = 16.w;
   static double s20 = 20.w;
   static double s24 = 24.w;

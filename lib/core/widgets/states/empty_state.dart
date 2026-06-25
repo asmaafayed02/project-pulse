@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_pulse/core/constants/app_colors.dart';
 import 'package:project_pulse/core/constants/app_sizes.dart';
 import 'package:project_pulse/core/extensions/context_extension.dart';
 
