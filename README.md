@@ -192,7 +192,7 @@ shared_preferences
 
 You can download the latest APK from:
 
-- GitHub Releases (https://github.com/asmaafayed02project_pulse/releases/latest)
+- GitHub Releases ([https://github.com/asmaafayed02project_pulse/releases/latest](https://github.com/asmaafayed02/project-pulse/releases/download/v1.0.0/app-release.apk))
 
 
 ---
