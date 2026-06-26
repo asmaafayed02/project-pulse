@@ -105,7 +105,6 @@ Networking is implemented using **Dio**.
 
 <p align="center">
   <img src="screenshots/dashboard.png" width="220" alt="Dashboard"/>
-  <img src="screenshots/dashboard_dark.png" width="220" alt="Dashboard Dark"/>
 </p>
 
 ### Projects
@@ -127,6 +126,7 @@ Networking is implemented using **Dio**.
 
 <p align="center">
   <img src="screenshots/profile.png" width="220" alt="Profile"/>
+  <img src="screenshots/profile_dark.png" width="220" alt="Profile"/>
 </p>
 
 ---
