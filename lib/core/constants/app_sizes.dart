@@ -5,6 +5,8 @@ class AppSizes {
   AppSizes._();
 
   // Spacing
+  static double s0 = 0.w;
+  static double s2 = 2.w;
   static double s4 = 4.w;
   static double s8 = 8.w;
   static const double s6  = 6;
@@ -19,14 +21,19 @@ class AppSizes {
   static double s48 = 48.w;
 
   // Radius
+  static double r4 = 4.r;
+  static double r6 = 6.r;
   static double r8 = 8.r;
+  static double r10 = 10.r;
   static double r12 = 12.r;
+  static double r14 = 14.r;
   static double r16 = 16.r;
   static double r20 = 20.r;
   static double r24 = 24.r;
 
   // Icons
   static double icon16 = 16.sp;
+  static double icon18 = 18.sp;
   static double icon20 = 20.sp;
   static double icon24 = 24.sp;
   static double icon28 = 28.sp;
@@ -52,4 +59,8 @@ class AppSizes {
 
   // Progress
   static double progressSize = 72.r;
+
+
+
+
 }

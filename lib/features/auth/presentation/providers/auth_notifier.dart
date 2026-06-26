@@ -35,6 +35,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserEntity?>> {
         );
       },
       (user) {
+           print('[AuthNotifier] login success → ${user.firstName} ${user.lastName}');
         state = AsyncData(user);
       },
     );

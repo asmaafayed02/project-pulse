@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_pulse/features/auth/presentation/pages/login_page.dart';
 import 'package:project_pulse/features/auth/presentation/pages/register_page.dart';
+import 'package:project_pulse/features/home/presentation/pages/home_page.dart';
+import 'package:project_pulse/features/home/presentation/pages/main_shell.dart';
 import 'package:project_pulse/features/projects/domain/entities/project_entity.dart';
 import 'package:project_pulse/features/projects/presentation/pages/create_project_page.dart';
 import 'package:project_pulse/features/projects/presentation/pages/project_details_page.dart';
@@ -34,9 +36,13 @@ class AppRouter {
 
       GoRoute(
         path: RouteNames.home,
-        builder: (context, state) => const ProjectsPage(),
+        builder: (context, state) => const MainShell(),
       ),
 
+      GoRoute(
+        path: RouteNames.projects,
+        builder: (context, state) => const ProjectsPage(),
+      ),
       GoRoute(
         path: RouteNames.projectDetails,
         

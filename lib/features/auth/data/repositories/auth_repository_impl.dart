@@ -23,12 +23,12 @@ Future<Either<Failure, UserEntity>> login({
       email: email,
       password: password,
     );
+      // Force-reload so displayName set during register is always fresh.
+      await credential.user?.reload();
+      final fresh = _remoteDataSource.getCurrentUser();
 
-    return Right(
-      UserModel.fromFirebase(
-        credential.user!,
-      ),
-    );
+        return Right(UserModel.fromFirebase(fresh ?? credential.user!));
+    
   } on FirebaseAuthException catch (e) {
     return Left(
       AuthFailure(
