@@ -5,9 +5,10 @@ import 'package:project_pulse/core/extensions/context_extension.dart';
 import 'package:project_pulse/features/home/domain/entities/nav_item_entity.dart';
 import 'package:project_pulse/features/home/presentation/pages/home_page.dart';
 import 'package:project_pulse/features/home/presentation/providers/home_provider.dart';
+import 'package:project_pulse/features/profile/presentation/pages/profile_page.dart';
 import 'package:project_pulse/features/projects/presentation/pages/projects_page.dart';
 import 'package:project_pulse/features/tasks/presentation/pages/all_tasks_page.dart';
-import 'package:project_pulse/features/tasks/presentation/pages/tasks_page.dart';
+import 'package:project_pulse/features/tasks/presentation/pages/project_tasks_page.dart';
 
 const _navItems = [
   NavItem(
@@ -38,7 +39,7 @@ const _pages = [
   HomePage(),
   ProjectsPage(),
   AllTasksPage(),
-  Scaffold(body: Center(child: Text('Profile'))),
+  ProfilePage()
 ];
 
 // ── Main Shell ────────────────────────────────────────────────────────────────

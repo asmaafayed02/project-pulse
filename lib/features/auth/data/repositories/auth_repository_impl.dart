@@ -1,8 +1,10 @@
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_pulse/core/errors/failures.dart';
 import 'package:project_pulse/core/errors/firebase_error_mapper.dart';
+import 'package:project_pulse/core/network/network_error_handler.dart';
 import 'package:project_pulse/features/auth/data/models/user_model.dart';
 import 'package:project_pulse/features/auth/domain/entities/user_entity.dart';
 import 'package:project_pulse/features/auth/domain/repositories/auth_repository.dart';
@@ -29,13 +31,11 @@ Future<Either<Failure, UserEntity>> login({
 
         return Right(UserModel.fromFirebase(fresh ?? credential.user!));
     
-  } on FirebaseAuthException catch (e) {
-    return Left(
-      AuthFailure(
-    FirebaseErrorMapper.map(e),
-        ),
-    );
-  }
+} on FirebaseAuthException catch (e) {
+  return Left(AuthFailure(FirebaseErrorMapper.map(e)));
+} catch (e) {
+  return Left(ServerFailure('Something went wrong. Please try again.'));
+}
 }
 
 @override
@@ -64,13 +64,11 @@ Future<Either<Failure, UserEntity>> register({
         email: email,
       ),
     );
-  } on FirebaseAuthException catch (e) {
-    return Left(
-      AuthFailure(
-        FirebaseErrorMapper.map(e),
-      ),
-    );
-  }
+} on FirebaseAuthException catch (e) {
+  return Left(AuthFailure(FirebaseErrorMapper.map(e)));
+} catch (e) {
+  return Left(ServerFailure('Something went wrong. Please try again.'));
+}
 }
 
 @override
@@ -78,13 +76,11 @@ Future<Either<Failure, void>> logout() async {
   try {
     await _remoteDataSource.logout();
     return const Right(null);
-  } catch (e) {
-    return Left(
-      ServerFailure(
-        e.toString(),
-      ),
-    );
-  }
+   } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
 }
 @override
 UserEntity? getCurrentUser() {

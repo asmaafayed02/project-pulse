@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:project_pulse/features/auth/domain/usecases/logout_usecase.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/login_usecase.dart';
@@ -8,11 +9,14 @@ import '../../domain/usecases/register_usecase.dart';
 class AuthNotifier extends StateNotifier<AsyncValue<UserEntity?>> {
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
+  final LogoutUseCase logoutUseCase;
 
   AuthNotifier({
   required this.loginUseCase,
   required this.registerUseCase,
-})  : super(const AsyncData(null));
+  required this.logoutUseCase,
+  UserEntity?     initialUser,  
+})  : super(AsyncData(initialUser));
 
   Future<void> login({
     required String email,
@@ -72,6 +76,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserEntity?>> {
   }
 
   void reset() {
+    state = const AsyncData(null);
+  }
+
+    Future<void> logout() async {
+
+    final result = await logoutUseCase();
+
+    result.fold(
+      (failure) {
+        state = AsyncError(
+          failure.message,
+          StackTrace.current,
+        );
+      },
+      (user) {
+           print('[AuthNotifier] logout success → ');
+      },
+    );
     state = const AsyncData(null);
   }
 }

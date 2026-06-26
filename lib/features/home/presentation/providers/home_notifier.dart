@@ -1,81 +1,64 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_pulse/features/home/domain/entities/home_summary_entity.dart';
-import 'package:project_pulse/features/projects/presentation/providers/projects_provider.dart';
+import 'package:project_pulse/features/home/presentation/providers/home_dependencies.dart';
+import 'package:project_pulse/features/projects/domain/usecases/get_projects_usecase.dart';
+import 'package:project_pulse/features/tasks/domain/usecases/get_all_tasks_usecase.dart';
 
 class HomeNotifier extends AsyncNotifier<HomeSummary> {
+  late final GetProjectsUseCase _getProjectsUseCase;
+  late final GetAllTasksUseCase _getAllTasksUseCase;
+
   @override
   Future<HomeSummary> build() async {
-    // Re-run whenever the projects list changes.
-    final projectsState = ref.watch(projectsProvider);
+    _getProjectsUseCase = ref.read(getProjectsUseCaseProvider);
+    _getAllTasksUseCase = ref.read(getAllTasksUseCaseProvider);
 
-    return projectsState.when(
-      loading: () => Future.value(const HomeSummary(
-        projectsCount: 0,
-        tasksCount: 0,
-        completedTasks: 0,
-        inProgressTasks: 0,
-        pendingTasks: 0,
-        recentProjects: [],
-      )),
-      error: (e, st) => Future.error(e, st),
-      data: (projects) {
-        // ── Derive counts from real project list ────────────────────────────
-        final completed = projects
-            .where((p) =>
-                p.status.toLowerCase() == 'completed' ||
-                p.status.toLowerCase() == 'done')
-            .length;
+    final projectsResult = await _getProjectsUseCase();
+    final tasksResult = await _getAllTasksUseCase();
 
-        final inProgress = projects
-            .where((p) =>
-                p.status.toLowerCase() == 'active' ||
-                p.status.toLowerCase() == 'in progress')
-            .length;
+    return projectsResult.fold(
+      (failure) => throw failure,
+      (projects) {
+        return tasksResult.fold(
+          (failure) => throw failure,
+          (tasks) {
+            final completedTasks =
+                tasks.where((t) => t.isDone).length;
 
-        final pending = projects
-            .where((p) =>
-                p.status.toLowerCase() == 'planning' ||
-                p.status.toLowerCase() == 'pending')
-            .length;
+            final inProgressTasks =
+                tasks.where((t) => t.isInProgress).length;
 
-        // tasksCount: sum tasksCount field if your entity has it,
-        // otherwise fall back to project count * average tasks.
-        // Replace `p.tasksCount` with the real field name when available.
-        // final totalTasks = projects.fold<int>(
-        //   0,
-        //   (sum, p) {
-        //     final count = (p as dynamic).tasksCount as int? ?? 0;
-        //     return sum + count;
-        //   },
-        // );
+            final pendingTasks =
+                tasks.where((t) => t.isPending).length;
 
-        // Sort by most recent / highest priority and take top 4.
-        final recent = [...projects]
-          ..sort((a, b) {
-            // Prioritise active > planning > completed
-            int rank(String s) => switch (s.toLowerCase()) {
-                  'active' || 'in progress' => 0,
-                  'planning' || 'pending'   => 1,
-                  _                         => 2,
-                };
-            return rank(a.status).compareTo(rank(b.status));
-          });
+            final recent = [...projects]
+              ..sort((a, b) {
+                int rank(String s) => switch (s.toLowerCase()) {
+                      'active' || 'in progress' => 0,
+                      'planning' || 'pending' => 1,
+                      _ => 2,
+                    };
 
-        return Future.value(HomeSummary(
-          projectsCount: projects.length,
-          tasksCount: projects.length,
-          completedTasks: completed,
-          inProgressTasks: inProgress,
-          pendingTasks: pending,
-          recentProjects: recent.take(4).toList(),
-        ));
+                return rank(a.status)
+                    .compareTo(rank(b.status));
+              });
+
+            return HomeSummary(
+              projectsCount: projects.length,
+              tasksCount: tasks.length,
+              completedTasks: completedTasks,
+              inProgressTasks: inProgressTasks,
+              pendingTasks: pendingTasks,
+              recentProjects: recent.take(4).toList(),
+            );
+          },
+        );
       },
     );
   }
 
   Future<void> refresh() async {
-    // Refreshing projects is enough — build() will react automatically.
-    await ref.read(projectsProvider.notifier).refresh();
+    ref.invalidateSelf();
+    await future;
   }
 }

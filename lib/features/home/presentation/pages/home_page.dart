@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_pulse/core/constants/app_sizes.dart';
+import 'package:project_pulse/core/errors/error_message_mapper.dart';
 import 'package:project_pulse/core/extensions/context_extension.dart';
 import 'package:project_pulse/core/extensions/navigation_extension.dart';
 import 'package:project_pulse/core/routes/route_names.dart';
 import 'package:project_pulse/features/auth/presentation/providers/auth_provider.dart';
+import 'package:project_pulse/features/home/presentation/widgets/home_skeleton.dart';
 import 'package:project_pulse/features/home/presentation/widgets/status_row.dart';
 import '../providers/home_provider.dart';
 import '../widgets/home_greeting.dart';
@@ -29,64 +31,61 @@ class HomePage extends ConsumerWidget {
       backgroundColor: context.colors.surface,
       body: SafeArea(
         child: homeState.when(
-          loading: () => const Center(
-            child: CircularProgressIndicator(strokeWidth: 2.5),
-          ),
+        loading: () => const HomeSkeleton(),
 
-          error: (error, _) => Center(
-            child: Padding(
-              padding: EdgeInsets.all(AppSizes.s24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: context.colors.errorContainer,
-                      borderRadius: BorderRadius.circular(AppSizes.r16),
-                    ),
-                    child: Icon(
-                      Icons.error_outline_rounded,
-                      size: 32,
-                      color: context.colors.error,
-                    ),
-                  ),
-                  SizedBox(height: AppSizes.s16),
-                  Text(
-                    'Failed to load dashboard',
-                    style: context.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: AppSizes.s8),
-                  Text(
-                    error.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colors.onSurface.withValues(alpha: 0.5),
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: AppSizes.s20),
-                  FilledButton.icon(
-                    onPressed: () => ref.invalidate(homeProvider),
-                    icon: const Icon(Icons.refresh_rounded, size: 18),
-                    label: const Text('Retry'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: context.colors.primary,
-                      foregroundColor: context.colors.onPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSizes.r12),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          error: (error, _)  => Center(
+  child: Padding(
+    padding: EdgeInsets.all(AppSizes.s24),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 64,
+          height: 64,
+          decoration: BoxDecoration(
+            color: context.colors.errorContainer,
+            borderRadius: BorderRadius.circular(AppSizes.r16),
+          ),
+          child: Icon(
+            Icons.error_outline_rounded,
+            size: AppSizes.avatar40,
+            color: context.colors.error,
+          ),
+        ),
+        SizedBox(height: AppSizes.s16),
+        Text(
+          'Failed to load dashboard',
+          style: context.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        SizedBox(height: AppSizes.s8),
+        Text(
+          ErrorMessageMapper.map(error), // ← the friendly, mapped message
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.colors.onSurface.withValues(alpha: 0.5),
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: AppSizes.s20),
+        FilledButton.icon(
+          onPressed: () => ref.invalidate(homeProvider),
+          icon: const Icon(Icons.refresh_rounded, size: 18),
+          label: const Text('Retry'),
+          style: FilledButton.styleFrom(
+            backgroundColor: context.colors.primary,
+            foregroundColor: context.colors.onPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizes.r12),
             ),
           ),
-
+        ),
+      ],
+    ),
+  ),
+),
           data: (summary) => RefreshIndicator(
             color: context.colors.primary,
             strokeWidth: 2.5,
@@ -102,11 +101,8 @@ class HomePage extends ConsumerWidget {
                     AppSizes.s0,
                   ),
                   sliver: SliverToBoxAdapter(
-                    // Hero tag 'user-avatar' matches the one in ProfilePage
-                    // so the avatar morphs smoothly when navigating to Profile.
                     child: HomeGreeting(
                       userName: userName,
-                      heroTag: 'user-avatar',
                     ),
                   ),
                 ),

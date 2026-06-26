@@ -10,6 +10,9 @@ final authProvider =
         AuthNotifier,
         AsyncValue<UserEntity?>>(
   (ref) {
+    final repo        = ref.read(authRepositoryProvider);
+    final initialUser = repo.getCurrentUser();
+    
     return AuthNotifier(
       loginUseCase: ref.read(
         loginUseCaseProvider,
@@ -17,6 +20,10 @@ final authProvider =
       registerUseCase: ref.read(
         registerUseCaseProvider,
       ),
+      logoutUseCase: ref.read(
+        logoutUseCaseProvider,
+      ),
+      initialUser:     initialUser
     );
   },
 );

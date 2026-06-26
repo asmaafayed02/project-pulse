@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_pulse/core/constants/app_colors.dart';
 import 'package:project_pulse/core/constants/app_durations.dart';
 import 'package:project_pulse/core/constants/app_sizes.dart';
@@ -7,6 +8,7 @@ import 'package:project_pulse/core/extensions/context_extension.dart';
 import 'package:project_pulse/core/extensions/navigation_extension.dart';
 import 'package:project_pulse/core/routes/route_names.dart';
 import 'package:project_pulse/core/widgets/common/app_logo.dart';
+import 'package:project_pulse/features/auth/presentation/providers/auth_provider.dart';
 import '../providers/splash_provider.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
@@ -27,20 +29,18 @@ class _SplashPageState extends ConsumerState<SplashPage>
     super.initState();
     _setupAnimations();
 
-    Future.microtask(() {
-      _subscription = ref.listenManual<AsyncValue<bool>>(
-        splashProvider,
-        (_, next) {
-          next.whenData((isLoggedIn) {
-            if (!mounted) return;
-            context.goTo(
-              isLoggedIn ? RouteNames.home : RouteNames.login,
-            );
-          });
-        },
-      );
-    });
+  _navigate();
   }
+  Future<void> _navigate() async {
+    // Small delay for splash visibility.
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+ 
+    // authProvider starts with getCurrentUser() 
+    final user = ref.read(authProvider).value;
+    context.go(user != null ? RouteNames.home : RouteNames.login);
+  }
+ 
 
   void _setupAnimations() {
     _controller = AnimationController(

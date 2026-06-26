@@ -3,7 +3,7 @@ import 'package:project_pulse/core/constants/app_sizes.dart';
 import 'package:project_pulse/core/extensions/context_extension.dart';
 import 'package:project_pulse/core/extensions/navigation_extension.dart';
 import 'package:project_pulse/core/routes/route_names.dart';
-import 'package:project_pulse/features/projects/presentation/widgets/empty_tasks.dart';
+import 'package:project_pulse/features/tasks/presentation/wigets/project_tasks_preview.dart';
 import '../../domain/entities/project_entity.dart';
 import '../widgets/project_header_card.dart';
 import '../widgets/project_info_card.dart';
@@ -54,12 +54,9 @@ class ProjectDetailsPage extends StatelessWidget {
 
             SizedBox(height: AppSizes.s8),
 
-            EmptyTasks(onAddTask: () {
-              context.pushTo(
-                RouteNames.tasks,
-                extra: project, 
-              );
-            }),
+          ProjectTasksPreview(
+  project: project,
+)
 
           ],
         ),

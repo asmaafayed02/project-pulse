@@ -5,15 +5,11 @@ import 'package:project_pulse/core/extensions/context_extension.dart';
 class HomeGreeting extends StatelessWidget {
   final String userName;
   final String? avatarUrl;
-  /// Pass a [heroTag] to animate the avatar when navigating to another screen
-  /// (e.g. ProfilePage) that wraps the same avatar in a Hero with matching tag.
-  final String? heroTag;
 
   const HomeGreeting({
     super.key,
     required this.userName,
     this.avatarUrl,
-    this.heroTag,
   });
 
   String get _greeting {
@@ -63,20 +59,20 @@ class HomeGreeting extends StatelessWidget {
 
         SizedBox(width: AppSizes.s12),
 
-        _Avatar(url: avatarUrl, name: userName, heroTag: heroTag),
+        // No Hero here — IndexedStack keeps all tabs mounted simultaneously
+        // so duplicate Hero tags crash. Hero only works across route pushes,
+        // not IndexedStack tab switches.
+        _Avatar(url: avatarUrl, name: userName),
       ],
     );
   }
 }
 
-// ── Avatar ────────────────────────────────────────────
-
 class _Avatar extends StatelessWidget {
   final String? url;
   final String name;
-  final String? heroTag;
 
-  const _Avatar({this.url, required this.name, this.heroTag});
+  const _Avatar({this.url, required this.name});
 
   String get _initials {
     final parts = name.trim().split(' ');
@@ -86,37 +82,31 @@ class _Avatar extends StatelessWidget {
     return name.isNotEmpty ? name[0].toUpperCase() : '?';
   }
 
-  Widget _buildAvatar(BuildContext context) => Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: context.colors.outlineVariant,
-            width: 1.5,
-          ),
-        ),
-        child: ClipOval(
-          child: url != null
-              ? Image.network(
-                  url!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) =>
-                      _InitialsFallback(initials: _initials),
-                )
-              : _InitialsFallback(initials: _initials),
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
-    final avatar = _buildAvatar(context);
-    if (heroTag == null) return avatar;
-    return Hero(tag: heroTag!, child: avatar);
+    return Container(
+      width: 44,
+      height: 44,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: context.colors.outlineVariant,
+          width: 1.5,
+        ),
+      ),
+      child: ClipOval(
+        child: url != null
+            ? Image.network(
+                url!,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    _InitialsFallback(initials: _initials),
+              )
+            : _InitialsFallback(initials: _initials),
+      ),
+    );
   }
 }
-
-// ── Initials fallback ─────────────────────────────────
 
 class _InitialsFallback extends StatelessWidget {
   final String initials;

@@ -6,17 +6,20 @@ import 'package:project_pulse/core/widgets/states/not_found_state.dart';
 import 'package:project_pulse/features/auth/presentation/pages/login_page.dart';
 import 'package:project_pulse/features/auth/presentation/pages/register_page.dart';
 import 'package:project_pulse/features/home/presentation/pages/main_shell.dart';
+import 'package:project_pulse/features/profile/presentation/pages/profile_page.dart';
 import 'package:project_pulse/features/projects/domain/entities/project_entity.dart';
 import 'package:project_pulse/features/projects/presentation/pages/create_project_page.dart';
 import 'package:project_pulse/features/projects/presentation/pages/project_details_page.dart';
+import 'package:project_pulse/features/projects/presentation/pages/projects_page.dart';
 import 'package:project_pulse/features/splash/presentation/pages/splash_page.dart';
-import 'package:project_pulse/features/tasks/presentation/pages/tasks_page.dart';
+import 'package:project_pulse/features/tasks/presentation/pages/project_tasks_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
     initialLocation: RouteNames.splash,
+
 
     errorBuilder: (context, state) => NotFoundState(
       path:     state.uri.toString(),
@@ -39,6 +42,10 @@ class AppRouter {
       GoRoute(
         path:    RouteNames.home,
         builder: (_, _) => const MainShell(),
+      ),
+      GoRoute(
+        path:    RouteNames.projects,
+        builder: (_, _) => const ProjectsPage(),
       ),
       GoRoute(
         path:    RouteNames.createProject,
@@ -73,12 +80,7 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
-        path:    RouteNames.profile,
-        builder: (_, _) => const Scaffold(
-          body: Center(child: Text('Profile')),
-        ),
-      ),
+    
     ],
   );
 }
