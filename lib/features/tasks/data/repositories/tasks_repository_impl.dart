@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_pulse/core/errors/failures.dart';
+import 'package:project_pulse/core/network/network_error_handler.dart';
 import 'package:project_pulse/features/tasks/data/datasources/tasks_remote_datasource.dart';
 import 'package:project_pulse/features/tasks/data/models/task_model.dart';
 import 'package:project_pulse/features/tasks/domain/entities/task_entity.dart';
@@ -17,7 +18,7 @@ Future<Either<Failure, List<TaskEntity>>> getAllTasks() async {
     return Right(result);
   } on DioException catch (e) {
     if (e.response?.statusCode == 404) return const Right([]);
-    return Left(ServerFailure(e.toString()));
+      return Left(NetworkErrorHandler.fromDio(e));
   } catch (e) {
     return Left(ServerFailure(e.toString()));
   }
@@ -31,7 +32,7 @@ Future<Either<Failure, List<TaskEntity>>> getTasks(String projectId) async {
     if (e.response?.statusCode == 404) {
       return const Right([]); 
     }
-    return Left(ServerFailure(e.toString()));
+      return Left(NetworkErrorHandler.fromDio(e));
   } catch (e) {
     return Left(ServerFailure(e.toString()));
   }
@@ -42,6 +43,8 @@ Future<Either<Failure, List<TaskEntity>>> getTasks(String projectId) async {
     try {
       final result = await _remote.createTask(TaskModel.fromEntity(task));
       return Right(result);
+     } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -52,6 +55,8 @@ Future<Either<Failure, List<TaskEntity>>> getTasks(String projectId) async {
     try {
       final result = await _remote.updateTask(TaskModel.fromEntity(task));
       return Right(result);
+  } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -62,6 +67,8 @@ Future<Either<Failure, List<TaskEntity>>> getTasks(String projectId) async {
     try {
       await _remote.deleteTask(id);
       return const Right(null);
+    } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

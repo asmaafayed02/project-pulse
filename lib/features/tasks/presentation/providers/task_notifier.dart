@@ -41,7 +41,7 @@ class TasksNotifier extends StateNotifier<AsyncValue<List<TaskEntity>>> {
   }
 
   Future<void> markAsDone(TaskEntity task) async {
-    final updated = task.copyWith(status: 'done');
+    final updated = task.copyWith(status: 'Done');
     final result  = await _updateTask(updated);
     result.fold(
       (f)           => state = AsyncValue.error(f.message, StackTrace.current),
@@ -53,6 +53,7 @@ class TasksNotifier extends StateNotifier<AsyncValue<List<TaskEntity>>> {
       },
     );
   }
+
 
   Future<void> refresh() => loadTasks();
 }

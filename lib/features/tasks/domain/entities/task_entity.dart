@@ -21,9 +21,15 @@ class TaskEntity {
     required this.createdAt,
   });
 
-  bool get isPending    => status == 'Pending';
-  bool get isInProgress => status == 'In Progress';
-  bool get isDone       => status == 'Done';
+String get normalizedStatus =>
+    status.trim().toLowerCase();
+
+bool get isPending => normalizedStatus == 'pending';
+
+bool get isInProgress =>
+    normalizedStatus == 'in progress';
+
+bool get isDone => normalizedStatus == 'done';
 
 
   TaskEntity copyWith({String? status}) {
