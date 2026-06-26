@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_pulse/core/constants/app_sizes.dart';
 import 'package:project_pulse/core/extensions/context_extension.dart';
+import 'package:project_pulse/core/extensions/navigation_extension.dart';
+import 'package:project_pulse/core/routes/route_names.dart';
 import 'package:project_pulse/features/projects/presentation/widgets/empty_tasks.dart';
 import '../../domain/entities/project_entity.dart';
 import '../widgets/project_header_card.dart';
@@ -41,7 +43,10 @@ class ProjectDetailsPage extends StatelessWidget {
             SectionTitle(
               title: 'Tasks',
               action: TextButton.icon(
-                onPressed: () {},
+                onPressed: () => context.pushTo(
+                RouteNames.tasks,
+                extra: project, 
+              ),
                 icon: const Icon(Icons.add, size: 18),
                 label: const Text('Add Task'),
               ),
@@ -49,7 +54,12 @@ class ProjectDetailsPage extends StatelessWidget {
 
             SizedBox(height: AppSizes.s8),
 
-            EmptyTasks(onAddTask: () {}),
+            EmptyTasks(onAddTask: () {
+              context.pushTo(
+                RouteNames.tasks,
+                extra: project, 
+              );
+            }),
 
           ],
         ),

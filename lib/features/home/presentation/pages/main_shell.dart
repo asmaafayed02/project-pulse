@@ -6,6 +6,8 @@ import 'package:project_pulse/features/home/domain/entities/nav_item_entity.dart
 import 'package:project_pulse/features/home/presentation/pages/home_page.dart';
 import 'package:project_pulse/features/home/presentation/providers/home_provider.dart';
 import 'package:project_pulse/features/projects/presentation/pages/projects_page.dart';
+import 'package:project_pulse/features/tasks/presentation/pages/all_tasks_page.dart';
+import 'package:project_pulse/features/tasks/presentation/pages/tasks_page.dart';
 
 const _navItems = [
   NavItem(
@@ -35,7 +37,7 @@ const _navItems = [
 const _pages = [
   HomePage(),
   ProjectsPage(),
-  Scaffold(body: Center(child: Text('Tasks'))),
+  AllTasksPage(),
   Scaffold(body: Center(child: Text('Profile'))),
 ];
 

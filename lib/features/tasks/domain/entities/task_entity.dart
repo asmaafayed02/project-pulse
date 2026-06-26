@@ -20,4 +20,23 @@ class TaskEntity {
     required this.projectId,
     required this.createdAt,
   });
+
+  bool get isPending    => status == 'Pending';
+  bool get isInProgress => status == 'In Progress';
+  bool get isDone       => status == 'Done';
+
+
+  TaskEntity copyWith({String? status}) {
+    return TaskEntity(
+      id:          id,
+      title:       title,
+      description: description,
+      status:      status ?? this.status,
+      assignee:    assignee,
+      priority:    priority,
+      dueDate:     dueDate,
+      projectId:   projectId,
+      createdAt:   createdAt,
+    );
+  }
 }

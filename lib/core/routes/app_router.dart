@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_pulse/core/routes/route_names.dart';
+import 'package:project_pulse/core/widgets/states/error_state.dart';
+import 'package:project_pulse/core/widgets/states/not_found_state.dart';
 import 'package:project_pulse/features/auth/presentation/pages/login_page.dart';
 import 'package:project_pulse/features/auth/presentation/pages/register_page.dart';
-import 'package:project_pulse/features/home/presentation/pages/home_page.dart';
 import 'package:project_pulse/features/home/presentation/pages/main_shell.dart';
 import 'package:project_pulse/features/projects/domain/entities/project_entity.dart';
 import 'package:project_pulse/features/projects/presentation/pages/create_project_page.dart';
 import 'package:project_pulse/features/projects/presentation/pages/project_details_page.dart';
-import 'package:project_pulse/features/projects/presentation/pages/projects_page.dart';
 import 'package:project_pulse/features/splash/presentation/pages/splash_page.dart';
-
-import 'route_names.dart';
+import 'package:project_pulse/features/tasks/presentation/pages/tasks_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -18,71 +18,67 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: RouteNames.splash,
 
+    errorBuilder: (context, state) => NotFoundState(
+      path:     state.uri.toString(),
+      onGoHome: () => context.go(RouteNames.home),
+    ),
+
     routes: [
       GoRoute(
-        path: RouteNames.splash,
-        builder: (context, state) => const SplashPage(),
+        path:    RouteNames.splash,
+        builder: (_, _) => const SplashPage(),
       ),
-
       GoRoute(
-        path: RouteNames.login,
-        builder: (context, state) => const LoginPage(),
+        path:    RouteNames.login,
+        builder: (_, _) => const LoginPage(),
       ),
-
       GoRoute(
-        path: RouteNames.register,
-        builder: (context, state) => const RegisterPage(),
+        path:    RouteNames.register,
+        builder: (_, _) => const RegisterPage(),
       ),
-
       GoRoute(
-        path: RouteNames.home,
-        builder: (context, state) => const MainShell(),
+        path:    RouteNames.home,
+        builder: (_, _) => const MainShell(),
       ),
-
       GoRoute(
-        path: RouteNames.projects,
-        builder: (context, state) => const ProjectsPage(),
+        path:    RouteNames.createProject,
+        builder: (_, _) => const CreateProjectPage(),
       ),
       GoRoute(
         path: RouteNames.projectDetails,
-        
-        builder: (context, state){
-           final project = state.extra as ProjectEntity;
-           return ProjectDetailsPage(project: project);
+        builder: (context, state) {
+          final project = state.extra;
+          if (project is! ProjectEntity) {
+            return ErrorState(
+              message:  'Project data is missing.',
+              onAction: () => context.go(RouteNames.home),
+            );
+          }
+          return ProjectDetailsPage(project: project);
         },
       ),
-
       GoRoute(
-        path: RouteNames.createProject,
-        builder: (context, state) => const CreateProjectPage(),
+        path: RouteNames.tasks,
+        builder: (context, state) {
+          final project = state.extra;
+          if (project is! ProjectEntity) {
+            return ErrorState(
+              message:  'Project data is missing.',
+              onAction: () => context.go(RouteNames.home),
+            );
+          }
+          return TasksPage(
+            projectId:    project.id,
+            projectTitle: project.title,
+          );
+        },
       ),
-
       GoRoute(
-        path: RouteNames.profile,
-        builder: (context, state) => const _PlaceholderPage('Profile'),
+        path:    RouteNames.profile,
+        builder: (_, _) => const Scaffold(
+          body: Center(child: Text('Profile')),
+        ),
       ),
     ],
-
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Route not found\n${state.uri}'),
-      ),
-    ),
   );
-}
-
-class _PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const _PlaceholderPage(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text(title),
-      ),
-    );
-  }
 }
