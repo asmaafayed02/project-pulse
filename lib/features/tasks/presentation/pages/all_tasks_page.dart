@@ -7,7 +7,9 @@ import 'package:project_pulse/core/routes/route_names.dart';
 import 'package:project_pulse/core/widgets/states/empty_state.dart';
 import 'package:project_pulse/features/projects/domain/entities/project_entity.dart';
 import 'package:project_pulse/features/projects/presentation/providers/projects_provider.dart';
+import 'package:project_pulse/features/tasks/domain/entities/task_entity.dart';
 import 'package:project_pulse/features/tasks/presentation/providers/tasks_provider.dart';
+import 'package:project_pulse/features/tasks/presentation/wigets/project_tasks_preview.dart';
 import 'package:project_pulse/features/tasks/presentation/wigets/task_card.dart';
 
 
@@ -64,12 +66,10 @@ class AllTasksPage extends ConsumerWidget {
                 itemCount: projects.length,
                 itemBuilder: (_, i) {
                   final project = projects[i];
-                  final tasks   = groupedTasks[project.id] ?? [];
                   return _ProjectTasksSection(
-                    project: project,
-                    tasks:   tasks,
-                    ref:     ref,
-                  );
+  project: project,
+  tasks: groupedTasks[project.id] ?? [],
+);
                 },
               ),
             ),
@@ -83,18 +83,15 @@ class AllTasksPage extends ConsumerWidget {
 // ── Section ───────────────────────────────────────────
 class _ProjectTasksSection extends StatelessWidget {
   final ProjectEntity project;
-  final List          tasks;
-  final WidgetRef     ref;
+  final List<TaskEntity> tasks;
 
   const _ProjectTasksSection({
     required this.project,
     required this.tasks,
-    required this.ref,
   });
 
   @override
   Widget build(BuildContext context) {
-    final preview = tasks.take(3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,47 +148,12 @@ class _ProjectTasksSection extends StatelessWidget {
         ),
 
         // ── Tasks preview ────────────────────────────
-        if (tasks.isEmpty)
-          Padding(
-            padding: EdgeInsets.only(left: AppSizes.s16, bottom: AppSizes.s8),
-            child: Text(
-              'No tasks yet',
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.colors.onSurface.withValues(alpha: 0.4),
-              ),
-            ),
-          )
-        else ...[
-          ...preview.map(
-            (t) => Padding(
-              padding: EdgeInsets.only(bottom: AppSizes.s8),
-              child: TaskCard(
-                task: t,
-                onMarkDone: t.isDone
-                    ? null
-                    : () => ref
-                        .read(tasksProvider(project.id).notifier)
-                        .markAsDone(t),
-              ),
-            ),
-          ),
-          if (tasks.length > 3)
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () =>
-                    context.pushTo(RouteNames.tasks, extra: project),
-                child: Text(
-                  'See all ${tasks.length} tasks →',
-                  style: TextStyle(
-                    color:      context.colors.primary,
-                    fontSize:   12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-        ],
+       
+        ProjectTasksPreview(
+          project: project,
+          tasks: tasks,
+        ),
+
 
         SizedBox(height: AppSizes.s8),
         Divider(color: context.colors.outlineVariant),
