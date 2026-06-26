@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_pulse/core/errors/failures.dart';
+import 'package:project_pulse/core/network/network_error_handler.dart';
 import 'package:project_pulse/features/projects/data/datasources/projects_remote_datasource.dart';
 import 'package:project_pulse/features/projects/domain/entities/project_entity.dart';
 import 'package:project_pulse/features/projects/domain/repositories/projects_repository.dart';
@@ -18,10 +20,10 @@ class ProjectsRepositoryImpl
           await remote.getProjects();
 
       return Right(result);
+   } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
     } catch (e) {
-      return Left(
-        ServerFailure(e.toString()),
-      );
+      return Left(ServerFailure(e.toString()));
     }
   }
   @override
@@ -41,6 +43,8 @@ class ProjectsRepositoryImpl
         dueDate:     dueDate,
       );
       return Right(result);
+     } on DioException catch (e) {
+      return Left(NetworkErrorHandler.fromDio(e));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
